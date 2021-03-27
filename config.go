@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"strconv"
 
 	"github.com/spf13/viper"
@@ -109,25 +108,6 @@ func OSSingleDip() error {
 	_ = projectName
 	_ = instanceName
 	_ = sqlName
-
-	return nil
-}
-
-func ViperSingleDipStruct() error {
-	type gcpConfig struct {
-		projectName  string
-		instanceName string
-		sqlName      string
-	}
-
-	cfg := &gcpConfig{
-		projectName:  viper.GetString("PROJECT_NAME"),
-		instanceName: viper.GetString("INSTANCE_NAME"),
-		sqlName:      viper.GetString("SQL_NAME"),
-	}
-
-	fmt.Printf("cfg: %+v\n", cfg)
-	fmt.Printf("cfg size: %+v\n", reflect.TypeOf(cfg).Size())
 
 	return nil
 }
