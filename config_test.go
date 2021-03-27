@@ -21,17 +21,17 @@ func BenchmarkViperDoubleDip(b *testing.B) {
 	}
 }
 
-func BenchmarkViperSingleDip(b *testing.B) {
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		ViperSingleDip()
-	}
-}
-
 func BenchmarkOSDoubleDip(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		OSSingleDip()
+	}
+}
+
+func BenchmarkViperSingleDip(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		ViperSingleDip()
 	}
 }
 
@@ -51,14 +51,6 @@ func BenchmarkViperGetBool(b *testing.B) {
 	}
 }
 
-func BenchmarkViperGetBoolNotSet(b *testing.B) {
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		ViperGetBool()
-	}
-}
-
 func BenchmarkOSGetBool(b *testing.B) {
 	defer setUnsetEnv("TEST_BOOL", "true")()
 	b.ResetTimer()
@@ -68,11 +60,62 @@ func BenchmarkOSGetBool(b *testing.B) {
 	}
 }
 
+func BenchmarkViperGetBoolNotSet(b *testing.B) {
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		ViperGetBool()
+	}
+}
+
 func BenchmarkOSGetBoolNotSet(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		OSGetBool()
+	}
+}
+
+func BenchmarkViperGetBoolWithError(b *testing.B) {
+	defer setUnsetEnv("TEST_BOOL", "true")()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		ViperGetBoolWithError()
+	}
+}
+
+func BenchmarkOSGetBoolWithError(b *testing.B) {
+	defer setUnsetEnv("TEST_BOOL", "true")()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		OSGetBoolWithError()
+	}
+}
+
+func BenchmarkViperGetBoolWithErrorNotSet(b *testing.B) {
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		ViperGetBoolWithError()
+	}
+}
+
+func BenchmarkOSGetBoolWithErrorNotSet(b *testing.B) {
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		OSGetBoolWithError()
+	}
+}
+
+func BenchmarkOSGetBoolWithErrorNotBool(b *testing.B) {
+	defer setUnsetEnv("TEST_BOOL", "abc")()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		OSGetBoolWithError()
 	}
 }
 

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -113,10 +114,6 @@ func OSSingleDip() error {
 }
 
 func ViperGetBool() bool {
-	set := viper.IsSet("TEST_BOOL")
-	if !set {
-		return false
-	}
 	return viper.GetBool("TEST_BOOL")
 }
 
@@ -132,4 +129,26 @@ func OSGetBool() bool {
 	}
 
 	return b
+}
+
+func ViperGetBoolWithError() (bool, error) {
+	set := viper.IsSet("TEST_BOOL")
+	if !set {
+		return false, errors.New("TEST_BOOL not set")
+	}
+	return viper.GetBool("TEST_BOOL"), nil
+}
+
+func OSGetBoolWithError() (bool, error) {
+	env, ok := os.LookupEnv("TEST_BOOL")
+	if !ok {
+		return false, errors.New("TEST_BOOL not set")
+	}
+
+	b, err := strconv.ParseBool(env)
+	if err != nil {
+		return false, errors.New("TEST_BOOL not parseable bool")
+	}
+
+	return b, nil
 }
